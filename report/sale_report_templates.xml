@@ -37,31 +37,6 @@
             </t>
         </xpath>
 
-        <!-- Inyectamos la dirección de sucursal en el bloque de dirección del emisor -->
-        <xpath expr="//t[@t-call='web.external_layout']" position="inside">
-            <t t-if="doc.x_branch_address_id">
-                <div class="row" style="margin-bottom: 8px;">
-                    <div class="col-12">
-                        <strong>Sucursal:</strong>
-                        <span t-field="doc.x_branch_address_id.display_name"/>
-                        <t t-if="doc.x_branch_address_id.street">
-                            <br/>
-                            <span t-field="doc.x_branch_address_id.street"/>
-                        </t>
-                        <t t-if="doc.x_branch_address_id.city">
-                            <span t-field="doc.x_branch_address_id.city"/>,
-                        </t>
-                        <t t-if="doc.x_branch_address_id.country_id">
-                            <span t-field="doc.x_branch_address_id.country_id.name"/>
-                        </t>
-                        <t t-if="doc.x_branch_address_id.phone">
-                            <br/>Tel: <span t-field="doc.x_branch_address_id.phone"/>
-                        </t>
-                    </div>
-                </div>
-            </t>
-        </xpath>
-
     </template>
 
 </odoo>
