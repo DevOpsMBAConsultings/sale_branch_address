@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Agregar campo en la cotización, visible junto al vendedor -->
+    <record id="view_order_form_branch_address" model="ir.ui.view">
+        <field name="name">sale.order.form.branch.address</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="x_branch_address_id"
+                       string="Sucursal Emisora"
+                       widget="many2one"
+                       options="{'no_create': True}"
+                       placeholder="Se asigna automáticamente por vendedor"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

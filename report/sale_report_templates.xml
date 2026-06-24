@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Override del bloque de dirección de la compañía en el reporte de cotización.
+        Si la cotización tiene x_branch_address_id, se imprime esa dirección.
+        Si no, se imprime la dirección normal de la compañía (comportamiento estándar).
+    -->
+    <template id="report_saleorder_branch_address"
+              inherit_id="sale.report_saleorder_document">
+
+        <!-- Reemplazamos el bloque de dirección de la compañía -->
+        <xpath expr="//div[hasclass('page')]//div[1]" position="before">
+            <!-- Bloque invisible que activa la lógica; el override se hace abajo -->
+        </xpath>
+
+        <!-- Override del address block de la compañía emisora -->
+        <xpath expr="//t[@t-call='web.external_layout']" position="attributes">
+            <!-- No tocamos el layout externo directamente -->
+        </xpath>
+
+    </template>
+
+    <!--
+        Override del layout externo para inyectar la dirección de sucursal.
+        Heredamos report_saleorder_document y sobreescribimos la variable
+        de compañía que usa el header.
+    -->
+    <template id="report_saleorder_document_branch"
+              inherit_id="sale.report_saleorder_document">
+
+        <!-- Justo antes del t-call del layout, redefinimos la dirección si hay sucursal -->
+        <xpath expr="//t[@t-call='web.external_layout']" position="before">
+            <t t-if="doc.x_branch_address_id">
+                <!-- Guardamos la dirección original y sobreescribimos temporalmente -->
+                <t t-set="o" t-value="doc.x_branch_address_id"/>
+            </t>
+        </xpath>
+
+        <!-- Inyectamos la dirección de sucursal en el bloque de dirección del emisor -->
+        <xpath expr="//t[@t-call='web.external_layout']" position="inside">
+            <t t-if="doc.x_branch_address_id">
+                <div class="row" style="margin-bottom: 8px;">
+                    <div class="col-12">
+                        <strong>Sucursal:</strong>
+                        <span t-field="doc.x_branch_address_id.display_name"/>
+                        <t t-if="doc.x_branch_address_id.street">
+                            <br/>
+                            <span t-field="doc.x_branch_address_id.street"/>
+                        </t>
+                        <t t-if="doc.x_branch_address_id.city">
+                            <span t-field="doc.x_branch_address_id.city"/>,
+                        </t>
+                        <t t-if="doc.x_branch_address_id.country_id">
+                            <span t-field="doc.x_branch_address_id.country_id.name"/>
+                        </t>
+                        <t t-if="doc.x_branch_address_id.phone">
+                            <br/>Tel: <span t-field="doc.x_branch_address_id.phone"/>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+
+    </template>
+
+</odoo>

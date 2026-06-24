@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Agregar campo en el formulario de usuario (sección de trabajo) -->
+    <record id="view_users_form_branch_address" model="ir.ui.view">
+        <field name="name">res.users.form.branch.address</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='share']" position="before">
+                <field name="x_branch_address_id"
+                       string="Dirección de Sucursal"
+                       widget="many2one"
+                       options="{'no_create': True}"
+                       placeholder="Ej: Oficina David, Chiriquí"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
